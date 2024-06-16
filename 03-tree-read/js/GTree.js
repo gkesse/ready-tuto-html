@@ -39,9 +39,9 @@ class GTree {
     }
     //===============================================
     initArrows() {
-        var lTrees = document.getElementsByClassName("tree1");
-        for(var i = 0; i < lTrees.length; i++) {
-            this.updateArrows(lTrees[i]);
+        var lLis = document.querySelectorAll(".tree1");
+        for(var i = 0; i < lLis.length; i++) {
+            this.updateArrows(lLis[i]);
         }
     }
     //===============================================
@@ -88,7 +88,7 @@ class GTree {
     }
     //===============================================
     showArrows(_parent) {
-        var lLis = _parent.querySelectorAll(".tree1 > li > .tree3, .tree1 > .tree4, .tree2 > li > .tree3, .tree2 > .tree4");
+        var lLis = _parent.querySelectorAll(":scope > li > .tree3, :scope > .tree4");
         for(var i = 0; i < lLis.length; i++) {
             var lLiCurrent = lLis[i];
             var lLiDown = lLiCurrent.querySelector(".tree5");
@@ -100,7 +100,7 @@ class GTree {
     //===============================================
     updateArrows(_parent) {
         this.showArrows(_parent);
-        var lLis = _parent.querySelectorAll(".tree1 > li > .tree3, .tree1 > .tree4, .tree2 > li > .tree3, .tree2 > .tree4");
+        var lLis = _parent.querySelectorAll(":scope > li > .tree3, :scope > .tree4");
         for(var i = 0; i < lLis.length; i++) {
             var lLiCurrent = lLis[i];
             var lLiDown = lLiCurrent.querySelector(".tree5");
@@ -113,6 +113,35 @@ class GTree {
             }
             if(!lLiCurrent.previousElementSibling) {
                 lLiUp.classList.add("hide");
+            }
+        }
+    }
+    //===============================================
+    readTree(_parent) {
+        var lParent = document.querySelector(_parent);
+        var lLis = lParent.querySelectorAll(":scope > li > .tree3, :scope > .tree4");
+        for(var i = 0; i < lLis.length; i++) {
+            var lLi = lLis[i];
+            if(lLi.classList.contains("tree3")) {
+                console.log(sprintf("%s", lLi.dataset.value));
+                this.readItem(lLi.nextElementSibling, "    ");
+            }
+            else {
+                console.log(sprintf("%s", lLi.dataset.value));
+            }
+        }
+    }
+    //===============================================
+    readItem(_parent, _shift) {
+        var lLis = _parent.querySelectorAll(":scope > li > .tree3, :scope > .tree4");
+        for(var i = 0; i < lLis.length; i++) {
+            var lLi = lLis[i];
+            if(lLi.classList.contains("tree3")) {
+                console.log(sprintf("%s%s", _shift, lLi.dataset.value));
+                this.readItem(lLi.nextElementSibling, _shift + "    ");
+            }
+            else {
+                console.log(sprintf("%s%s", _shift, lLi.dataset.value));
             }
         }
     }
